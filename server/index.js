@@ -15,10 +15,16 @@ const app = express();
 
 
 app.use(cors({
-  origin: 'https://giftcards-client.onrender.com',  // Allow requests from this domain
+  origin: 'https://giftcards-client.onrender.com', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+  preflightContinue: true,
+  optionsSuccessStatus: 200,  // This is to handle some older browsers
+}), (req, res, next) => {
+  console.log("CORS headers set for:", req.method, req.path);
+  next();
+});
+
 
 // Middleware
 app.use(bodyParser.json());
